@@ -17,8 +17,8 @@
           $scope.massageClass = "alert alert-warning";
       } else {
           var lunchItems = cleanUp(items);
-          if (lunchItems.length>0) {
-              if (lunchItems.length <= 3) {
+          if (lunchItems >= 0) {
+              if (lunchItems <= 3) {
                   $scope.massageClass = "alert alert-success";
                   $scope.errorMassage = "Enjoy!";
                 } else {
@@ -34,12 +34,12 @@
 
     function cleanUp(item) {
       var itemArray = item.split(",");
-      var arrayToReturn = [];
+      var numItems = 0;
       itemArray.forEach(function(currentItem) {
         if (currentItem.trim().length > 0)
-          arrayToReturn.push(currentItem);
+          numItems++;
       });
-      return arrayToReturn;
+      return numItems;
     }
   }
 })();
