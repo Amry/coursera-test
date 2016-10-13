@@ -8,7 +8,6 @@
   LunchCheckController.$inject = ['$scope'];
 
   function LunchCheckController($scope) {
-    $scope.items = '';
     $scope.errorMassage = '';
 
     $scope.checkIt = function(items) {
