@@ -9,8 +9,10 @@
 
   function LunchCheckController($scope) {
     $scope.errorMassage = '';
+    $scope.items = '';
 
-    $scope.checkIt = function(items) {
+    $scope.checkIt = function() {
+      var items = $scope.items;
       if (!items ) {
           $scope.errorMassage = "Please enter data first!";
           $scope.massageClass = "alert alert-warning";
