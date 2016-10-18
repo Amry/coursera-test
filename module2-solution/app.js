@@ -9,7 +9,7 @@
   ToBuyController.$inject = ['ShoppingListCheckOffService'];
 
   function ToBuyController(ShoppingListCheckOffService) {
-      this.Items = ShoppingListCheckOffService.getBuyItems();
+      this.Items = ShoppingListCheckOffService.getItems(1);
       this.removeItem = function (itemIndex) {
           ShoppingListCheckOffService.removeItem(itemIndex);
       };
@@ -18,8 +18,7 @@
   AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
 
   function AlreadyBoughtController(ShoppingListCheckOffService) {
-      this.Items = ShoppingListCheckOffService.getBoughtItems();
-      console.log("Bought Items: " + this.Items);
+      this.Items = ShoppingListCheckOffService.getItems(2);
   }
 
   function ShoppingListCheckOffService() {
@@ -33,21 +32,18 @@
     ];
 
     this.removeItem = function(itemIndex) {
-      addItem(buyList[itemIndex]);
-      buyList.splice(itemIndex, 1);
+        var item = buyList.splice(itemIndex, 1);
+        boughtList.push(item[0]);
     };
 
-    var addItem = function(items) {
-      boughtList.push(items);
-    }
-
-    this.getBuyItems = function() {
-      return buyList;
+    this.getItems = function(listIndex) {
+      if (listIndex === 1) {
+          return buyList;
+      } else if (listIndex === 2) {
+          return boughtList;
+      }
+      throw new Error("Invalid list index");
     };
-
-    this.getBoughtItems = function() {
-      return boughtList;
-    }
 
   }
 

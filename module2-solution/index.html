@@ -18,10 +18,10 @@
 
     <!-- To Buy List -->
     <div class="col-md-6" ng-controller="ToBuyController as buyCtrl">
-        <h2>To Buy:</h2>
+        <h2>To Buy: (items are real tajik products, within () are english names)</h2>
         <ul>
             <li ng-repeat="item in buyCtrl.Items">
-                Buy {{item.quantity}} of {{item.name}}
+                Buy {{item.quantity}} {{item.name}}
                 <button class="btn btn-default" ng-click = "buyCtrl.removeItem($index)">
                     <span class="glyphicon glyphicon-ok">
                     </span>
@@ -29,18 +29,18 @@
                 </button>
             </li>
         </ul>
-        <div ng-if="!buyCtrl.Items" class="emptyMessage">Everything is bought!</div>
+        <div ng-if="buyCtrl.Items.length === 0" class="emptyMessage">Everything is bought!</div>
     </div>
 
     <!-- Already Bought List -->
-    <div class="col-md-6" ng-contrller="AlreadyBoughtController as boughtCtrl">
+    <div class="col-md-6" ng-controller="AlreadyBoughtController as boughtCtrl">
         <h2>Already Bought:</h2>
         <ul>
             <li ng-repeat="item in boughtCtrl.Items">
-                  Bought {{item.quantity}} of {{item.name}}
+                  Bought {{item.quantity}} {{item.name}}
             </li>
         </ul>
-        <div ng-if="!boughtCtrl.Items" class="emptyMessage">Nothing bought yet.</div>
+        <div ng-if="!boughtCtrl.Items.length > 0" class="emptyMessage">Nothing bought yet.</div>
     </div>
   </div>
 </div>
