@@ -1,4 +1,4 @@
-(function(){
+(function() {
 
     'use strict';
 
@@ -9,20 +9,64 @@
 
     NarrowItDownController.$inject = ['MenuSearchService'];
     function NarrowItDownController(MenuSearchService) {
-        var item = this.searchItem;
-        var found = this.foundItems;
-        this.requestTheItem = function(item) {
-            console.log(item);
-            found = MenuSearchService.getMatchedMenuItems(item);
-        }
-    };
-
-    funmction MenuSearchService() {
-
-        this.getMatchedMenuItems = function(searchTerm) {
-
+        this.found = "";
+        this.requestTheItem = function() {
+            this.message = "";
+            var item = this.searchItem;
+            if (!item) {
+                  this.message = "Nothing Found!";
+                  return;
+            }
+            this.found = MenuSearchService.getMatched(item);
         };
+        this.remove = function (index) {
+            this.found.splice(index, 1);
+        }
+    }
 
+    function MenuSearchService() {
+
+      init();
+
+      function init() {}
+
+      return {
+           getMatched: getMatchedItems
+      }
+
+      function getMatchedItems(searchTerm) {
+          return [{
+             name: "Perfecto",
+             short_name: "shortName",
+             description: "description"
+          }];
+      };
+
+    }
+
+    function foundItemsDirective() {
+        return {
+            restrict: 'E',
+            scope: {
+                onRemove: '&remove',
+                foundItems: '<'
+            },
+            templateUrl: 'foundItems.tpl.html',
+            controller: foundItemsDirectiveController,
+            controllerAs: 'list',
+            link: foundItemsDirectiveLink
+
+        }
+
+        function foundItemsDirectiveLink(scope, element, attrs, controller) {
+            if (angular.isUndefined(attrs.foundItems) || angular.isUndefined(attrs.remove)) {
+                throw new Error('The required attributes are not found!');
+            }
+        }
+
+        function foundItemsDirectiveController($scope) {
+
+        }
     }
 
 
