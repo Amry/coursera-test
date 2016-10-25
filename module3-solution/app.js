@@ -5,26 +5,44 @@
     angular.module('NarrowItDownApp', [])
     .controller('NarrowItDownController', NarrowItDownController)
     .factory('MenuSearchService', MenuSearchService)
+    .constant('baseAPI', 'https://davids-restaurant.herokuapp.com/')
     .directive('foundItems', foundItemsDirective);
 
     NarrowItDownController.$inject = ['MenuSearchService'];
     function NarrowItDownController(MenuSearchService) {
-        this.found = "";
-        this.requestTheItem = function() {
-            this.message = "";
-            var item = this.searchItem;
+        var menu = this;
+        menu.found = "";
+        menu.requestTheItem = function() {
+            menu.message = "";
+            menu.found = "";
+            var item = menu.searchItem;
             if (!item) {
-                  this.message = "Nothing Found!";
+                  menu.message = "Nothing Found!";
                   return;
             }
-            this.found = MenuSearchService.getMatched(item);
+            var promise = MenuSearchService.getMatched(item);
+            promise.then(function (foundItems) {
+                if (foundItems.length === 0) {
+                    menu.message = "Nothing found!";
+                    return;
+                }
+                menu.found = foundItems;
+            })
+            .catch(function (error) {
+                menu.message = error;
+            })
         };
-        this.remove = function (index) {
-            this.found.splice(index, 1);
+        menu.remove = function (index) {
+            menu.found.splice(index, 1);
         }
     }
 
-    function MenuSearchService() {
+    MenuSearchService.$inject = ["$http", "baseAPI", "$q"];
+    function MenuSearchService($http, baseAPI, $q) {
+      var getRequest = {
+          url: baseAPI + "menu_items.json",
+          method: "GET",
+      }
 
       init();
 
@@ -35,12 +53,29 @@
       }
 
       function getMatchedItems(searchTerm) {
-          return [{
-             name: "Perfecto",
-             short_name: "shortName",
-             description: "description"
-          }];
-      };
+        var deferred = $q.defer();
+        var found = [];
+
+        getRequest.params = {
+            description: searchTerm
+        }
+        var httpRequest = $http(getRequest);
+        httpRequest.then(function (response) {
+            var items = response.data.menu_items;
+            angular.forEach(items, function(item) {
+                if (item.description.indexOf(searchTerm) !== -1) {
+                    found.push(item);
+                }
+            });
+            deferred.resolve(found);
+        })
+        .catch(function (error) {
+            deferred.reject(error);
+            console.log("something went wrong!");
+        });
+
+        return deferred.promise;
+      }
 
     }
 
@@ -54,8 +89,8 @@
             templateUrl: 'foundItems.tpl.html',
             controller: foundItemsDirectiveController,
             controllerAs: 'list',
+            bindToController: true,
             link: foundItemsDirectiveLink
-
         }
 
         function foundItemsDirectiveLink(scope, element, attrs, controller) {
@@ -64,8 +99,8 @@
             }
         }
 
-        function foundItemsDirectiveController($scope) {
-
+        function foundItemsDirectiveController() {
+            var list = this;
         }
     }
 

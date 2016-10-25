@@ -1,12 +1,16 @@
 <div>
-    <ul>
-        <li ng-repeat="item in foundItems">
-          {{item.name}}, {{item.short_name}}, {{item.description}}
-          <button class="btn btn-default" ng-click = "onRemove({index: $index})">
-              <span class="glyphicon glyphicon-remove">
-              </span>
-                Don't want this one!
+  <div ng-repeat="item in list.foundItems">
+    <div class="row">
+      <div class="col-xs-3 col-md-3">{{item.name}}</div>
+      <div class="col-xs-3 col-md-1">{{item.short_name}}</div>
+      <div class="col-xs-3 col-md-5">{{item.description}}</div>
+      <div class="col-xs-3 col-md-3">
+          <button class="btn btn-default" ng-click = "list.onRemove({index: $index})">
+            <span class="glyphicon glyphicon-remove">
+            </span>
+              Don't want this one!
           </button>
-        </li>
-    </ul>
+      </div>
+    </div>
+  </div>
 </div>
