@@ -1,4 +1,5 @@
 <div>
+  <div class="alert alert-success" ng-if="list.foundItems.length > 0"> Matched menu items </div>
   <div ng-repeat="item in list.foundItems">
     <div class="row">
       <div class="col-xs-3 col-md-3">{{item.name}}</div>
