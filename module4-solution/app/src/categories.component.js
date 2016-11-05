@@ -2,9 +2,10 @@
 	'use strict'
 
 	angular.module('MenuApp')
-		.component('categories', {
+		.component('categoryList', {
+			templateUrl: 'app/view/category.tpl.html',
 			bindings: {
-				recievedCategories: '<'
+				categories: '<'
 			}
 		});
 })()

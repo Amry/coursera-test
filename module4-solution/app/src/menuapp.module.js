@@ -2,7 +2,7 @@
 
 	'use strict';
 
-	angular.module('MenuApp', ['ui.router', 'data']);
+	angular.module('MenuApp', ['ui.router', 'dataModule']);
 
 	angular.module('MenuApp')
 		.config(RoutingConfig);
@@ -11,17 +11,35 @@
 
 	function RoutingConfig($stateProvider, $urlRouterProvider) {
 
-		$urlRouterProvider.otherwise('home');
+		$urlRouterProvider.otherwise('/');
 
 		$stateProvider
-			.state('categories', {
-				url: '/categories',
-				templateUrl: 'src/categories.html'
+			.state('home', {
+				url: '/',
+				templateUrl: 'app/view/home.html'
 			})
 
+		.state('categories', {
+			url: '/categories',
+			templateUrl: 'app/view/categories.html',
+			controller: 'CategoryController as catCtrl',
+			resolve: {
+				categoriesMenu: ['MenuDataService', function (MenuDataService) {
+					return MenuDataService.getAllCategories();
+					}]
+			}
+		})
+
 		.state('items', {
-			urL: 'items',
-			templateUrl: 'src/items.html'
+			url: '/items/{shortName}',
+			templateUrl: 'app/view/items.html',
+			controller: 'ItemsController as itemsCtrl',
+			resolve: {
+				itemsList: ['MenuDataService', '$stateParams', function (MenuDataService, $stateParams) {
+						return MenuDataService.getItemsForCategory($stateParams.shortName);
+					}
+				]
+			}
 		})
 	}
 

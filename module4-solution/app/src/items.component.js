@@ -2,9 +2,10 @@
 	'use strict'
 
 	angular.module('MenuApp')
-		.component('items', {
+		.component('itemList', {
+			templateUrl: 'app/view/items.tpl.html',
 			bindings: {
-				recievedItems: '<'
+				items: '<'
 			}
 		});
 })()

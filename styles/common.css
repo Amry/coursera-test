@@ -13,3 +13,11 @@ li > button {
 button > span {
   color: green;
 }
+
+.list-group {
+  width: 30%;
+}
+
+.links {
+  align-items: center;
+}
