@@ -35,7 +35,7 @@
 
 		function check(short_name) {
 			var menu_items = {
-				url: 'http://amry87-module5.herokuapp.com/menu_items.json',
+				url: 'https://amry87-module5.herokuapp.com/menu_items.json',
 				method: 'GET'
 			};
 
